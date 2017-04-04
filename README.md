@@ -3,14 +3,14 @@
 ## Pre-Setup (If you don't have Homebrew and/or Github setup with SSH access)
 Install Homebrew and git, and set up SSH for Github
 ```bash
-curl --remote-name https://raw.githubusercontent.com/colbycheeze/dotfiles/master/setup/pre-setup.sh
+curl --remote-name https://raw.githubusercontent.com/DragosIorgulescu/dotfiles/master/setup/pre-setup.sh
 chmod a+x pre-setup.sh
 ./pre-setup.sh
 ```
 Manually Install latest (non beta) Xcode from the [app store](https://developer.apple.com/xcode/downloads/)
 
 ## Setup
-   `git clone git@github.com:colbycheeze/dotfiles.git ~/dotfiles && cd ~/dotfiles/setup && chmod a+x setup.sh && ./setup.sh`
+   `git clone git@github.com:DragosIorgulescu/dotfiles.git ~/dotfiles && cd ~/dotfiles/setup && chmod a+x setup.sh && ./setup.sh`
 
 ## Finishing touches
   1. open `tmux` and install plugins: `CTRL + A, I`
