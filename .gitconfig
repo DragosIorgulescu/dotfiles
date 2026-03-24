@@ -1,0 +1,78 @@
+[user]
+    name = Matei
+    email = dragos@creativepill.com
+
+[core]
+    editor = nvim
+    pager = "delta 2>/dev/null || less"
+    autocrlf = input
+    excludesfile = ~/.gitignore_global
+    whitespace = trailing-space,space-before-tab
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = true
+
+[push]
+    default = current
+    autoSetupRemote = true
+
+[fetch]
+    prune = true
+
+[merge]
+    conflictstyle = zdiff3
+    tool = nvim
+
+[mergetool "nvim"]
+    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
+[diff]
+    algorithm = histogram
+    colorMoved = default
+
+[interactive]
+    diffFilter = "delta --color-only 2>/dev/null || cat"
+
+[delta]
+    navigate = true
+    light = false
+    side-by-side = true
+    line-numbers = true
+    syntax-theme = Catppuccin Mocha
+
+[rerere]
+    enabled = true
+
+[rebase]
+    autoStash = true
+    autoSquash = true
+
+[branch]
+    sort = -committerdate
+
+[alias]
+    s = status -sb
+    co = checkout
+    cb = checkout -b
+    cm = commit -m
+    ca = commit --amend --no-edit
+    cp = cherry-pick
+    unstage = reset HEAD --
+    last = log -1 HEAD --stat
+    graph = log --graph --oneline --decorate --all
+    cleanup = "!git branch --merged | grep -v '\\*\\|main\\|master\\|develop' | xargs -n 1 git branch -d"
+    wip = "!git add -A && git commit -m 'wip [skip ci]'"
+    undo = reset --soft HEAD~1
+
+[color]
+    ui = auto
+
+[credential]
+    helper = osxkeychain
+
+# Uncomment after SSH key is configured on this machine:
+# [url "git@github.com:"]
+#     insteadOf = https://github.com/

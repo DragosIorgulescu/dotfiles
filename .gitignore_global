@@ -1,0 +1,53 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Env files
+.env
+.env.local
+.env.*.local
+.envrc
+
+# Dependencies
+node_modules/
+vendor/
+__pycache__/
+*.pyc
+
+# Build
+dist/
+build/
+*.o
+*.so
+*.dylib
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+
+# Docker
+.docker/
+
+# Misc
+*.log
+*.tmp
+.cache/
+coverage/
+.nyc_output/
