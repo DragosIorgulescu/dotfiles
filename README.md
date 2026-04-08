@@ -32,9 +32,21 @@ chmod +x install.sh
 # - Install JetBrains IDEs via Toolbox app
 ```
 
+### Lightweight Setup (existing Mac)
+
+If you already have a dev environment and want configs without installing brew packages:
+
+```bash
+git clone https://github.com/YOUR_USER/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+./install-light.sh
+```
+
+This symlinks Zsh, Neovim, Starship, Tmux (with TPM), and Ghostty configs. Git config is opt-in (it overwrites `user.name`/`user.email`). No Homebrew, no language runtimes, no macOS defaults. Backs up any existing configs.
+
 ### Neovim Only (existing machine)
 
-If you already have a dev environment and just want the Neovim config:
+If you just want the Neovim config:
 
 ```bash
 git clone https://github.com/YOUR_USER/dotfiles.git ~/dotfiles
@@ -49,6 +61,7 @@ This only symlinks `nvim/` to `~/.config/nvim` and syncs plugins. It checks for 
 ```
 dotfiles/
 ├── install.sh              # Full bootstrap script (idempotent)
+├── install-light.sh        # Lightweight install (symlinks only, no brew)
 ├── install-nvim.sh         # Neovim-only install (for existing machines)
 ├── Brewfile                # Homebrew packages & casks
 ├── .gitconfig              # Git configuration (delta pager w/ fallback)
