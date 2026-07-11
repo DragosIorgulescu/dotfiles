@@ -65,6 +65,21 @@ command = /bin/zsh --login
 keybind = cmd+d=new_split:right
 keybind = cmd+shift+d=new_split:down
 
+# Split navigation — hjkl aliases for Ghostty's default cmd+alt+arrows.
+# All Cmd-based, so Ghostty consumes them; tmux (Ctrl-a / Ctrl-hjkl) and
+# nvim never see them. (cmd+alt+h also shadows macOS "Hide Others" while
+# Ghostty is focused — a trade most terminal users happily make.)
+keybind = cmd+alt+h=goto_split:left
+keybind = cmd+alt+j=goto_split:down
+keybind = cmd+alt+k=goto_split:up
+keybind = cmd+alt+l=goto_split:right
+# Split resize — hjkl aliases for the default cmd+ctrl+arrows.
+keybind = cmd+ctrl+h=resize_split:left,10
+keybind = cmd+ctrl+j=resize_split:down,10
+keybind = cmd+ctrl+k=resize_split:up,10
+keybind = cmd+ctrl+l=resize_split:right,10
+# Split zoom is already cmd+shift+enter (Ghostty default); cycle is cmd+[ / cmd+].
+
 # Tab management
 keybind = cmd+t=new_tab
 keybind = cmd+w=close_surface
