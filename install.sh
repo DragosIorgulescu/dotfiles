@@ -175,6 +175,17 @@ else
   ok "TPM"
 fi
 
+# --- Dracula tmux theme (optional; loads only when TMUX_THEME=dracula) -------
+# Cloned OUTSIDE ~/.tmux/plugins so TPM's clean-plugins won't remove it. The
+# tmux config run-shell's it conditionally; see the theme block in tmux.conf.
+if [[ -d "$HOME/.tmux/dracula" ]]; then
+  skip "Dracula tmux theme"
+else
+  info "Cloning Dracula tmux theme…"
+  git clone --depth 1 https://github.com/dracula/tmux "$HOME/.tmux/dracula"
+  ok "Dracula tmux theme"
+fi
+
 # --- Neovim first launch (lazy.nvim will auto-install) ----------------------
 # lazy.nvim's sync is idempotent — it only installs/updates what's needed
 info "Syncing Neovim plugins (headless)…"
