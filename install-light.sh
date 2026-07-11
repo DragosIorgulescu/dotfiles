@@ -3,9 +3,10 @@
 # Lightweight Install — for Macs that already have a dev environment
 # =============================================================================
 # Symlinks configs for Zsh, Neovim, Starship, Tmux, and Ghostty, then
-# brew-installs any MISSING CLI tools and Neovim linters (already-
-# installed formulae are skipped). Requires Homebrew. Does NOT install
-# language runtimes or macOS defaults — use install.sh for the full setup.
+# brew-installs any MISSING CLI tools, Neovim linters, and a small set of
+# essential GUI apps (already-installed ones are skipped). Requires Homebrew.
+# Does NOT install language runtimes or macOS defaults — use install.sh for
+# the full setup.
 # Idempotent: safe to re-run at any time. Backs up existing files.
 #
 # Usage: git clone <repo> ~/dotfiles && cd ~/dotfiles && ./install-light.sh
@@ -44,7 +45,7 @@ symlink() {
 
 echo ""
 info "Lightweight Dotfiles Installer"
-info "Symlinks only — no Homebrew, no language runtimes, no macOS defaults"
+info "Configs + essential CLI tools & apps — no language runtimes or macOS defaults"
 echo ""
 
 # Check Homebrew
@@ -59,6 +60,10 @@ REQUIRED_TOOLS=(neovim tmux starship ripgrep fd eza bat dust duf procs btop lsd 
 # Without these, nvim emits ENOENT errors when opening matching filetypes.
 NVIM_LINTERS=(yamllint shellcheck shfmt hadolint stylua prettier golangci-lint tflint ruff)
 
+# Essential GUI apps (casks). Kept minimal — this is otherwise a CLI/config
+# installer. Raycast is the cross-project window switcher used with tmux.
+REQUIRED_CASKS=(raycast)
+
 missing_tools=()
 for tool in "${REQUIRED_TOOLS[@]}" "${NVIM_LINTERS[@]}"; do
   if ! brew list "$tool" &>/dev/null; then
@@ -72,6 +77,21 @@ if [[ ${#missing_tools[@]} -gt 0 ]]; then
   ok "CLI tools installed"
 else
   ok "All CLI tools already installed"
+fi
+
+missing_casks=()
+for cask in "${REQUIRED_CASKS[@]}"; do
+  if ! brew list --cask "$cask" &>/dev/null; then
+    missing_casks+=("$cask")
+  fi
+done
+
+if [[ ${#missing_casks[@]} -gt 0 ]]; then
+  info "Installing missing GUI apps: ${missing_casks[*]}"
+  brew install --cask "${missing_casks[@]}"
+  ok "GUI apps installed"
+else
+  ok "All GUI apps already installed"
 fi
 
 echo ""
