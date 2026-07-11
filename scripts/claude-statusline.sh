@@ -8,10 +8,16 @@
 #   "statusLine": { "type": "command",
 #                   "command": "~/dev/dotfiles/scripts/claude-statusline.sh" }
 #
-# It writes the token count to two files under ${XDG_CACHE_HOME:-~/.cache}/claude-tokens:
-#   • latest        — always (most-recent active session; global fallback)
-#   • pane-<tty>    — best-effort, only when this process has a controlling tty
-#                     (lets the widget scope to the focused pane; see the widget)
+# It publishes the token count under ${XDG_CACHE_HOME:-~/.cache}/claude-tokens:
+#   • cwd-<slug>  — keyed by the session's working directory. This is the only
+#                   identifier the tmux widget can also derive (from the focused
+#                   pane's #{pane_current_path}), so it's how per-pane scoping
+#                   works. (Claude 2.x runs each session through a detached
+#                   pty-host daemon with no controlling tty, so tty/pane-id
+#                   correlation isn't available — cwd is.)
+#   • latest      — most-recent session (only used if the widget's global mode
+#                   is enabled).
+#   • .last       — debug: the cwd/slug/tokens last written.
 # Freshness (file mtime) is what the widget uses to decide "session is active".
 #
 # Deliberately NOT `set -e`: a status line must never crash — degrade instead.
@@ -23,7 +29,9 @@ field() { printf '%s' "$json" | jq -r "$1" 2>/dev/null; }
 
 transcript=$(field '.transcript_path // empty')
 model=$(field '.model.display_name // .model.id // "claude"')
-cwd=$(field '.workspace.current_dir // .cwd // empty')
+# Prefer the real cwd (matches tmux #{pane_current_path}); fall back to workspace.
+cwd=$(field '.cwd // .workspace.current_dir // empty')
+cwd="${cwd%/}"
 
 # Current context = the last usage entry's input + cache_read + cache_creation.
 ctx=""
@@ -45,13 +53,13 @@ cache="${XDG_CACHE_HOME:-$HOME/.cache}/claude-tokens"
 mkdir -p "$cache" 2>/dev/null
 if [ -n "$tokens" ]; then
   printf '%s\n' "$tokens" > "$cache/latest" 2>/dev/null
-  tty=$(ps -o tty= -p $$ 2>/dev/null | tr -d ' ')
-  case "$tty" in
-    "" | "?" | "??") : ;;                                   # no tty → skip per-pane
-    *) printf '%s\n' "$tokens" > "$cache/pane-${tty##*/}" 2>/dev/null ;;
-  esac
-  # tidy: drop per-pane files older than a day so stale ttys don't accumulate
-  find "$cache" -name 'pane-*' -type f -mtime +1 -delete 2>/dev/null
+  if [ -n "$cwd" ]; then
+    slug=$(printf '%s' "$cwd" | tr -c 'A-Za-z0-9' '-')
+    printf '%s\n' "$tokens" > "$cache/cwd-$slug" 2>/dev/null
+    printf 'cwd=%s\nslug=%s\ntokens=%s\n' "$cwd" "$slug" "$tokens" > "$cache/.last" 2>/dev/null
+  fi
+  # tidy: drop per-dir files older than a day so stale sessions don't accumulate
+  find "$cache" -name 'cwd-*' -type f -mtime +1 -delete 2>/dev/null
 fi
 
 # --- the status line shown inside Claude Code -------------------------------
