@@ -229,7 +229,3 @@ killport() {
 
 # --- Local overrides (not tracked in git) ------------------------------------
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
-
-
-# Added by Antigravity CLI installer
-export PATH="/Users/sogard/.local/bin:$PATH"
