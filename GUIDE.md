@@ -390,7 +390,7 @@ Prefix is `Ctrl+A` (not the default Ctrl+B). Vi copy-mode, mouse enabled, window
 | Keys | Action |
 |------|--------|
 | `prefix + S` | Create new session (prompts for name) |
-| `prefix + K` | Kill current session (with confirmation) |
+| `prefix + X` | Kill current session (with confirmation) |
 | `prefix + BTab` | Switch to last session |
 | `prefix + o` | SessionX picker (FZF + zoxide-aware) |
 | `prefix + r` | Reload tmux config |

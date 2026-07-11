@@ -204,7 +204,7 @@ Sessions are like workspaces — one per project. Each session has its own windo
 | Create new session | `prefix + S` (prompted for name) |
 | Switch sessions (FZF) | `prefix + o` (SessionX picker) |
 | Switch to last session | `prefix + BTab` (backtab) |
-| Kill current session | `prefix + K` |
+| Kill current session | `prefix + X` |
 | Detach (leave tmux running) | `prefix + d` |
 | Reattach from terminal | `tmux a` or `tmux attach` |
 | List sessions from terminal | `tmux ls` |
