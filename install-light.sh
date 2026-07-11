@@ -114,6 +114,17 @@ else
     warn "  git not found — cannot install TPM"
   fi
 fi
+
+# Dracula theme (optional; loads only when TMUX_THEME=dracula). tmux.conf also
+# self-installs it on first toggle, so this is just a pre-fetch. Kept outside
+# ~/.tmux/plugins so TPM's clean-plugins won't remove it.
+if [[ -d "$HOME/.tmux/dracula" ]]; then
+  skip "  Dracula theme (already cloned)"
+elif command_exists git; then
+  info "Pre-fetching Dracula tmux theme…"
+  git clone --depth 1 https://github.com/dracula/tmux "$HOME/.tmux/dracula" 2>/dev/null || true
+  ok "  Dracula theme cloned"
+fi
 ok "Tmux config"
 
 # --- Ghostty ----------------------------------------------------------------
