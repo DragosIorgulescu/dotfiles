@@ -2,8 +2,10 @@
 # =============================================================================
 # Lightweight Install — for Macs that already have a dev environment
 # =============================================================================
-# Symlinks configs for Zsh, Neovim, Starship, Tmux, and Ghostty.
-# Does NOT install Homebrew packages, language runtimes, or macOS defaults.
+# Symlinks configs for Zsh, Neovim, Starship, Tmux, and Ghostty, then
+# brew-installs any MISSING CLI tools and Neovim linters (already-
+# installed formulae are skipped). Requires Homebrew. Does NOT install
+# language runtimes or macOS defaults — use install.sh for the full setup.
 # Idempotent: safe to re-run at any time. Backs up existing files.
 #
 # Usage: git clone <repo> ~/dotfiles && cd ~/dotfiles && ./install-light.sh
