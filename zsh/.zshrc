@@ -190,6 +190,19 @@ alias ta='tmux attach -t'
 alias tn='tmux new -s'
 alias tl='tmux ls'
 
+# tmux session picker (opt-in). `ts` fuzzy-attaches an existing session;
+# `ts <name>` attaches to <name> or creates it. Works in or out of tmux.
+ts() {
+  local session="${1:-$(tmux ls -F '#S' 2>/dev/null | fzf --height=40% --reverse --prompt='session> ')}"
+  [[ -z "$session" ]] && return
+  if [[ -n "$TMUX" ]]; then
+    tmux has-session -t "$session" 2>/dev/null || tmux new-session -d -s "$session"
+    tmux switch-client -t "$session"
+  else
+    tmux new-session -A -s "$session"
+  fi
+}
+
 # Misc
 alias c='clear'
 alias reload='exec zsh'
