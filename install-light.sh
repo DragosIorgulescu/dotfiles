@@ -45,25 +45,32 @@ info "Lightweight Dotfiles Installer"
 info "Symlinks only — no Homebrew, no language runtimes, no macOS defaults"
 echo ""
 
-# Check required tools
-if ! command_exists nvim; then
-  warn "Neovim not found — config will be symlinked but plugins won't sync"
-  warn "Install with: brew install neovim"
+# Check Homebrew
+if ! command_exists brew; then
+  fail "Homebrew not found. Install from https://brew.sh first."
 fi
 
-# Check recommended tools
-for tool in rg fd starship tmux; do
-  if command_exists "$tool"; then
-    ok "$tool found"
-  else
-    case "$tool" in
-      rg)       warn "ripgrep (rg) not found — Telescope live grep won't work" ;;
-      fd)       warn "fd not found — Telescope file finder may be slower" ;;
-      starship) warn "starship not found — prompt theme won't render. Install: brew install starship" ;;
-      tmux)     warn "tmux not found — tmux config will be symlinked but won't be usable" ;;
-    esac
+# CLI tools required by .zshrc aliases and config
+REQUIRED_TOOLS=(neovim tmux starship ripgrep fd eza bat dust duf procs btop lsd zoxide atuin tree-sitter-cli)
+
+# Linters & formatters invoked by nvim (conform.nvim + nvim-lint).
+# Without these, nvim emits ENOENT errors when opening matching filetypes.
+NVIM_LINTERS=(yamllint shellcheck shfmt hadolint stylua prettier golangci-lint tflint ruff)
+
+missing_tools=()
+for tool in "${REQUIRED_TOOLS[@]}" "${NVIM_LINTERS[@]}"; do
+  if ! brew list "$tool" &>/dev/null; then
+    missing_tools+=("$tool")
   fi
 done
+
+if [[ ${#missing_tools[@]} -gt 0 ]]; then
+  info "Installing missing CLI tools: ${missing_tools[*]}"
+  brew install "${missing_tools[@]}"
+  ok "CLI tools installed"
+else
+  ok "All CLI tools already installed"
+fi
 
 echo ""
 
