@@ -82,6 +82,8 @@ keybind = cmd+ctrl+l=resize_split:right,10
 
 # Tab management
 keybind = cmd+t=new_tab
+# Hand-name the current tab (overrides tmux's auto-title for that tab).
+keybind = cmd+shift+i=prompt_tab_title
 keybind = cmd+w=close_surface
 
 # Font size
