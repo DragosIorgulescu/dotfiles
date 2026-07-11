@@ -23,3 +23,7 @@ path=(
 )
 
 export PATH
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/sogard/.local/bin:$PATH"
