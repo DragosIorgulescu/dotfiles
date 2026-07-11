@@ -58,8 +58,7 @@ return {
       })
 
       -- ── Hover / signature borders ──────────────────────────────────
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
+      vim.o.winborder = "rounded"
 
       -- ── Capabilities (from cmp) ────────────────────────────────────
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -88,14 +87,14 @@ return {
           map("<leader>cs", vim.lsp.buf.signature_help, "Signature help")
 
           -- Inlay hints (Neovim 0.10+)
-          if client and client.supports_method("textDocument/inlayHint") then
+          if client and client:supports_method("textDocument/inlayHint") then
             map("<leader>ch", function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
             end, "Toggle inlay hints")
           end
 
           -- Code lens
-          if client and client.supports_method("textDocument/codeLens") then
+          if client and client:supports_method("textDocument/codeLens") then
             map("<leader>cl", vim.lsp.codelens.run, "Code lens")
           end
         end,

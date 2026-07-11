@@ -44,7 +44,7 @@ require("lazy").setup({
     { import = "matei.plugins" },
   },
   defaults = { lazy = true },
-  install = { colorscheme = { "catppuccin", "habamax" } },
+  install = { colorscheme = { "kanagawa", "habamax" } },
   checker = { enabled = true, notify = false },
   change_detection = { notify = false },
   performance = {

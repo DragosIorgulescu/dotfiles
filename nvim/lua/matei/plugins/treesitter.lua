@@ -35,18 +35,22 @@ return {
   -- ── nvim-treesitter (main branch) ──────────────────────────────────
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     lazy = false,  -- must not be lazy-loaded
     build = ":TSUpdate",
     config = function()
-      -- Only install parsers that are missing (avoids re-download spam on every launch)
-      local ts = require("nvim-treesitter")
-      local missing = vim.tbl_filter(function(lang)
-        local ok = pcall(vim.treesitter.language.inspect, lang)
-        return not ok
-      end, parsers)
-      if #missing > 0 then
-        ts.install(missing)
-      end
+      -- Install missing parsers (deferred to avoid load-order issues with lazy.nvim)
+      vim.schedule(function()
+        local ok, ts = pcall(require, "nvim-treesitter")
+        if not ok or not ts.install then return end
+        local missing = vim.tbl_filter(function(lang)
+          local has, _ = pcall(vim.treesitter.language.inspect, lang)
+          return not has
+        end, parsers)
+        if #missing > 0 then
+          ts.install(missing)
+        end
+      end)
 
       -- Enable treesitter highlighting for all filetypes with a parser
       vim.api.nvim_create_autocmd("FileType", {

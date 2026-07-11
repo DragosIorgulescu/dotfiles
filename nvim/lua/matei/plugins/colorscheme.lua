@@ -1,53 +1,43 @@
 -- =============================================================================
--- Colorscheme — Catppuccin (Mocha)
+-- Colorscheme — Clean dark (black background, minimal colors)
 -- =============================================================================
 return {
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
+    "rebelot/kanagawa.nvim",
     lazy = false,
     priority = 1000,
     opts = {
-      flavour = "mocha",
-      transparent_background = false,
-      term_colors = true,
-      dim_inactive = { enabled = true, percentage = 0.15 },
-      styles = {
-        comments = { "italic" },
-        conditionals = { "italic" },
-        functions = { "bold" },
-        keywords = { "bold", "italic" },
-      },
-      integrations = {
-        cmp = true,
-        gitsigns = true,
-        nvimtree = true,
-        telescope = { enabled = true },
-        treesitter = true,
-        treesitter_context = true,
-        which_key = true,
-        indent_blankline = { enabled = true },
-        mason = true,
-        native_lsp = {
-          enabled = true,
-          underlines = {
-            errors = { "undercurl" },
-            hints = { "undercurl" },
-            warnings = { "undercurl" },
-            information = { "undercurl" },
+      compile = true,
+      theme = "dragon",
+      background = { dark = "dragon" },
+      colors = {
+        theme = {
+          dragon = {
+            ui = {
+              bg = "#000000",
+              bg_dim = "#000000",
+              bg_gutter = "#000000",
+              bg_m3 = "#070707",
+              bg_m2 = "#0a0a0a",
+              bg_m1 = "#0e0e0e",
+              bg_p1 = "#111111",
+              bg_p2 = "#1a1a1a",
+            },
           },
         },
-        navic = { enabled = true },
-        noice = true,
-        notify = true,
-        mini = { enabled = true },
-        harpoon = true,
-        flash = true,
       },
+      overrides = function(colors)
+        return {
+          NormalFloat = { bg = "#0a0a0a" },
+          FloatBorder = { bg = "#0a0a0a" },
+          TelescopeNormal = { bg = "#000000" },
+          TelescopeBorder = { bg = "#000000" },
+        }
+      end,
     },
     config = function(_, opts)
-      require("catppuccin").setup(opts)
-      vim.cmd.colorscheme("catppuccin")
+      require("kanagawa").setup(opts)
+      vim.cmd.colorscheme("kanagawa-dragon")
     end,
   },
 }

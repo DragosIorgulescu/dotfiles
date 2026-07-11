@@ -9,7 +9,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
       options = {
-        theme = "catppuccin",
+        theme = "auto",
         globalstatus = true,
         component_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },
@@ -37,35 +37,6 @@ return {
       },
       extensions = { "neo-tree", "lazy", "fugitive", "quickfix", "man", "toggleterm" },
     },
-  },
-
-  -- Bufferline (tab bar)
-  {
-    "akinsho/bufferline.nvim",
-    event = "VeryLazy",
-    dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin" },
-    opts = function()
-      local highlights = {}
-      local ok, catppuccin_bl = pcall(require, "catppuccin.groups.integrations.bufferline")
-      if ok then highlights = catppuccin_bl.get() end
-      return {
-        highlights = highlights,
-        options = {
-          diagnostics = "nvim_lsp",
-          diagnostics_indicator = function(_, _, diag)
-            local icons = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-            local ret = (diag.error and icons.Error .. diag.error .. " " or "")
-              .. (diag.warning and icons.Warn .. diag.warning or "")
-            return vim.trim(ret)
-          end,
-          offsets = {
-            { filetype = "neo-tree", text = "File Explorer", highlight = "Directory", separator = true },
-          },
-          always_show_bufferline = false,
-          separator_style = "slant",
-        },
-      }
-    end,
   },
 
   -- Indent guides
